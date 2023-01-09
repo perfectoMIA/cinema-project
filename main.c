@@ -50,6 +50,6 @@ struct list *deletelem(node *lst) {
 }
 
 int main(void) {
-  
+  printf("biba");
     return 0;
 }
