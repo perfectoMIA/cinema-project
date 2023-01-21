@@ -156,54 +156,54 @@ void print_line_with_spaces(const char *string, const char position) {
 }
 
 // Вывод карусели с фильмами
-// void print_cards(film *film) {
-//     text_bold(stdout);
-//     text_blue(stdout);
-//     printf("                        ╔══════════════════════════════════════════════╗");
-//     printf("                        \n                        ");
-//     printf("║                                              ║");
-//     printf("                        \n                        ");
-//     printf("║                                              ║");
-//     printf("                        \n╔═══════════════════════");
-//     print_line_with_spaces(film->name, 0);
-//     printf("═══════════════════════╗\n║                       ");
-//     printf("║                                              ║");
-//     printf("                       ║\n");
-//     print_line_with_spaces(film->prev->name, 1);
-//     print_line_with_spaces(film->genre, 0);
-//     print_line_with_spaces(film->next->name, 2);
-//     printf("\n║                       ");
-//     printf("║                                              ║");
-//     printf("                       ║\n");
-//     print_line_with_spaces(film->prev->genre, 1);
-//     print_line_with_spaces(film->country, 0);
-//     print_line_with_spaces(film->next->genre, 2);
-//     printf("\n║                       ");
-//     printf("║                                              ║");
-//     printf("                       ║\n");
-//     print_line_with_spaces(film->prev->country, 1);
-//     printf("║                     %.1f+                     ║", film->rate);
-//     print_line_with_spaces(film->next->country, 2);
-//     printf("\n║                       ");
-//     printf("║                                              ║");
-//     printf("                       ║\n║                       ");
-//     printf("║                                              ║");
-//     printf("                       ║\n║                       ");
-//     printf("║                                              ║");
-//     printf("                       ║\n║          ***          ");
-//     printf("║                                              ║");
-//     printf("          ***          ║\n║                       ");
-//     printf("║                                              ║");
-//     printf("                       ║\n╚═══════════════════════");
-//     printf("║                     %d                     ║", film->year);
-//     printf("═══════════════════════╝\n                        ");
-//     printf("║                                              ║");
-//     printf("                        \n                        ");
-//     printf("║                                              ║");
-//     printf("                        \n                        ");
-//     printf("╚══════════════════════════════════════════════╝\n");
-//     reset_colors(stdout);
-// }
+void print_cards(film *film) {
+    text_bold(stdout);
+    text_blue(stdout);
+    printf("                        ╔══════════════════════════════════════════════╗");
+    printf("                        \n                        ");
+    printf("║                                              ║");
+    printf("                        \n                        ");
+    printf("║                                              ║");
+    printf("                        \n╔═══════════════════════");
+    print_line_with_spaces(film->name, 0);
+    printf("═══════════════════════╗\n║                       ");
+    printf("║                                              ║");
+    printf("                       ║\n");
+    print_line_with_spaces(film->prev->film.name, 1);
+    print_line_with_spaces(film->genre, 0);
+    print_line_with_spaces(film->next->film.name, 2);
+    printf("\n║                       ");
+    printf("║                                              ║");
+    printf("                       ║\n");
+    print_line_with_spaces(film->prev->film.genre, 1);
+    print_line_with_spaces(film->country, 0);
+    print_line_with_spaces(film->next->film.genre, 2);
+    printf("\n║                       ");
+    printf("║                                              ║");
+    printf("                       ║\n");
+    print_line_with_spaces(film->prev->film.country, 1);
+    printf("║                     %.1f+                     ║", film->rate);
+    print_line_with_spaces(film->next->film.country, 2);
+    printf("\n║                       ");
+    printf("║                                              ║");
+    printf("                       ║\n║                       ");
+    printf("║                                              ║");
+    printf("                       ║\n║                       ");
+    printf("║                                              ║");
+    printf("                       ║\n║          ***          ");
+    printf("║                                              ║");
+    printf("          ***          ║\n║                       ");
+    printf("║                                              ║");
+    printf("                       ║\n╚═══════════════════════");
+    printf("║                     %d                     ║", film->year);
+    printf("═══════════════════════╝\n                        ");
+    printf("║                                              ║");
+    printf("                        \n                        ");
+    printf("║                                              ║");
+    printf("                        \n                        ");
+    printf("╚══════════════════════════════════════════════╝\n");
+    reset_colors(stdout);
+}
 
 void printFilm(filmList *cur, int n) {
     if (n) {
