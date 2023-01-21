@@ -55,7 +55,7 @@ struct list *init(film film) {
 // }
 // Добавление нового фильма в список
 film *add_film(struct node *ring) {
-    film *film = (film *)malloc(sizeof(film));
+    film *film = malloc(sizeof(film));
 
     if (ring->current == NULL) {
         ring->current = film;
@@ -156,54 +156,55 @@ void print_line_with_spaces(const char *string, const char position) {
 }
 
 // Вывод карусели с фильмами
-void print_cards(film *film) {
-    text_bold(stdout);
-    text_blue(stdout);
-    printf("                        ╔══════════════════════════════════════════════╗");
-    printf("                        \n                        ");
-    printf("║                                              ║");
-    printf("                        \n                        ");
-    printf("║                                              ║");
-    printf("                        \n╔═══════════════════════");
-    print_line_with_spaces(film->name, 0);
-    printf("═══════════════════════╗\n║                       ");
-    printf("║                                              ║");
-    printf("                       ║\n");
-    print_line_with_spaces(film->prev->name, 1);
-    print_line_with_spaces(film->genre, 0);
-    print_line_with_spaces(film->next->name, 2);
-    printf("\n║                       ");
-    printf("║                                              ║");
-    printf("                       ║\n");
-    print_line_with_spaces(film->prev->genre, 1);
-    print_line_with_spaces(film->country, 0);
-    print_line_with_spaces(film->next->genre, 2);
-    printf("\n║                       ");
-    printf("║                                              ║");
-    printf("                       ║\n");
-    print_line_with_spaces(film->prev->country, 1);
-    printf("║                     %.1f+                     ║", film->rate);
-    print_line_with_spaces(film->next->country, 2);
-    printf("\n║                       ");
-    printf("║                                              ║");
-    printf("                       ║\n║                       ");
-    printf("║                                              ║");
-    printf("                       ║\n║                       ");
-    printf("║                                              ║");
-    printf("                       ║\n║          ***          ");
-    printf("║                                              ║");
-    printf("          ***          ║\n║                       ");
-    printf("║                                              ║");
-    printf("                       ║\n╚═══════════════════════");
-    printf("║                     %d                     ║", film->year);
-    printf("═══════════════════════╝\n                        ");
-    printf("║                                              ║");
-    printf("                        \n                        ");
-    printf("║                                              ║");
-    printf("                        \n                        ");
-    printf("╚══════════════════════════════════════════════╝\n");
-    reset_colors(stdout);
-}
+// void print_cards(film *film) {
+//     text_bold(stdout);
+//     text_blue(stdout);
+//     printf("                        ╔══════════════════════════════════════════════╗");
+//     printf("                        \n                        ");
+//     printf("║                                              ║");
+//     printf("                        \n                        ");
+//     printf("║                                              ║");
+//     printf("                        \n╔═══════════════════════");
+//     print_line_with_spaces(film->name, 0);
+//     printf("═══════════════════════╗\n║                       ");
+//     printf("║                                              ║");
+//     printf("                       ║\n");
+//     print_line_with_spaces(film->prev->name, 1);
+//     print_line_with_spaces(film->genre, 0);
+//     print_line_with_spaces(film->next->name, 2);
+//     printf("\n║                       ");
+//     printf("║                                              ║");
+//     printf("                       ║\n");
+//     print_line_with_spaces(film->prev->genre, 1);
+//     print_line_with_spaces(film->country, 0);
+//     print_line_with_spaces(film->next->genre, 2);
+//     printf("\n║                       ");
+//     printf("║                                              ║");
+//     printf("                       ║\n");
+//     print_line_with_spaces(film->prev->country, 1);
+//     printf("║                     %.1f+                     ║", film->rate);
+//     print_line_with_spaces(film->next->country, 2);
+//     printf("\n║                       ");
+//     printf("║                                              ║");
+//     printf("                       ║\n║                       ");
+//     printf("║                                              ║");
+//     printf("                       ║\n║                       ");
+//     printf("║                                              ║");
+//     printf("                       ║\n║          ***          ");
+//     printf("║                                              ║");
+//     printf("          ***          ║\n║                       ");
+//     printf("║                                              ║");
+//     printf("                       ║\n╚═══════════════════════");
+//     printf("║                     %d                     ║", film->year);
+//     printf("═══════════════════════╝\n                        ");
+//     printf("║                                              ║");
+//     printf("                        \n                        ");
+//     printf("║                                              ║");
+//     printf("                        \n                        ");
+//     printf("╚══════════════════════════════════════════════╝\n");
+//     reset_colors(stdout);
+// }
+
 void printFilm(filmList *cur, int n) {
     if (n) {
         printf("%s", cur->film.name);
@@ -283,7 +284,266 @@ int isFilmInList(favorites *head, char *name) {
     return 0;
 }
 
+//структура пользователя
+typedef struct user {
+  char login[20];//логин
+  char password[20];//пароль
+  char number_card[16];//номер карты
+  char admin[1];//администратор или пользователь
+  int favorites_list;//размер списка избранного 
+}user;
+
+int correct_login (user tmp) {
+  FILE* file = fopen ("users.txt", "a");
+  user client;
+  int correct_login = 0, correct_password = 0, correct_number_card = 0, correct_admin = 0;
+  while (correct_login != 1) {
+    int check_uppercase_letter = 0, check_number = 0, check_lowercase_letter = 0;
+    printf ("придумайте корректный логин: ");
+    //считывание логина с консоли
+    fgets (client.login, 21, stdin);
+    //подсчёт количества символов в логине
+    int amount_login = strlen(client.login);
+    //подсчёт количества символов в логине без учёта пробела и переноса строки
+    for (int i = 0; i < 20; i++) {
+      int box = (int)client.login[i];
+      if (box == 10 || box == 32) {
+        amount_login--;
+      }
+    }
+    //проверка логина на корректность
+    if (amount_login >= 3 && amount_login <= 20) {
+      for (int i = 0; i < amount_login; i++) {
+        int box = (int)client.login[i];
+        if (box >= 65 && box <= 90) {
+          check_uppercase_letter = 1;
+        }
+        else if (client.login[i] >= 48 && client.login[i] <= 57) {
+        }
+        else if (client.login[i] >= 97 && box <= 122) {
+          check_lowercase_letter = 1;
+        }
+        else {
+          break;
+        }
+        
+        if (i == amount_login - 1 && (check_uppercase_letter == 1 || check_lowercase_letter == 1)) {
+          correct_login = 1;
+        }
+      }
+    }
+  }
+  fprintf (file, "%s", client.login);
+}
+
+int correct_password (user tmp) {
+  
+}
+int correct_number_card () {
+  
+}
+int correct_admin () {
+  
+}
+
+//функция регистрации пользователя
+user user_registration () {
+  FILE* file = fopen ("users.txt", "a");
+  //очистка буфера
+  while (getchar () != '\n');
+  //создание новой структуры для хранения данных пользователя
+  user client;
+  int correct_login = 0, correct_password = 0, correct_number_card = 0, correct_admin = 0;
+  //создание корректного логина
+  while (correct_login != 1) {
+    int check_uppercase_letter = 0, check_number = 0, check_lowercase_letter = 0;
+    printf ("придумайте корректный логин: ");
+    //считывание логина с консоли
+    fgets (client.login, 21, stdin);
+    //подсчёт количества символов в логине
+    int amount_login = strlen(client.login);
+    //подсчёт количества символов в логине без учёта пробела и переноса строки
+    for (int i = 0; i < 20; i++) {
+      int box = (int)client.login[i];
+      if (box == 10 || box == 32) {
+        amount_login--;
+      }
+    }
+    //проверка логина на корректность
+    if (amount_login >= 3 && amount_login <= 20) {
+      for (int i = 0; i < amount_login; i++) {
+        int box = (int)client.login[i];
+        if (box >= 65 && box <= 90) {
+          check_uppercase_letter = 1;
+        }
+        else if (client.login[i] >= 48 && client.login[i] <= 57) {
+        }
+        else if (client.login[i] >= 97 && box <= 122) {
+          check_lowercase_letter = 1;
+        }
+        else {
+          break;
+        }
+        
+        if (i == amount_login - 1 && (check_uppercase_letter == 1 || check_lowercase_letter == 1)) {
+          correct_login = 1;
+        }
+      }
+    }
+  }
+  fprintf (file, "%s", client.login);
+  //создание корректного пароля
+  while (correct_password != 1) {
+    int check_uppercase_letter = 0, check_number = 0, check_lowercase_letter = 0;
+    printf ("придумайте корректный пароль: ");
+    //cчитывание пароля с консоли
+    fgets (client.password, 21, stdin);
+    //подсчёт количества символов в пароле
+    int amount_password = strlen(client.password);
+    //подсчёт количества символов в пароле без учёта пробела и переноса строки
+    for (int i = 0; i < 20; i++) {
+      int box = (int)client.password[i];
+      if (box == 10 || box == 32) {
+        amount_password--;
+      }
+    }
+    //проверка пароля на корректность
+    if (amount_password >= 6 && amount_password <= 20) {
+      for (int i = 0; i < amount_password; i++) {
+        int box = (int)client.password[i];
+        if (box >= 65 && box <= 90) {
+          check_uppercase_letter = 1;
+        }
+        else if (client.password[i] >= 48 && client.password[i] <= 57) {
+          check_number = 1;
+        }
+        else if (client.password[i] >= 97 && box <= 122) {
+          check_lowercase_letter = 1;
+        }
+        else {
+          break;
+        }
+        if (i == amount_password - 1 && check_uppercase_letter == 1 && check_number == 1 && check_lowercase_letter == 1) {
+          correct_password = 1;
+        }
+      }
+    }
+  }
+  fprintf (file, "%s", client.password);
+  //корректный ввод номера карты
+  while (correct_number_card != 1) {
+    printf ("введите корректный номер карты: ");
+    //считывание номера карты с консоли
+    fgets (client.number_card, 17, stdin);
+    //подсчёт количества символов в номере карты
+    int amount_number_card = strlen(client.number_card);
+    //подсчёт количества символов в номере карты без учёта пробела и переноса строки
+    for (int i = 0; i < 20; i++) {
+      int box = (int)client.number_card[i];
+      if (box == 10 || box == 32) {
+        amount_number_card--;
+      }
+    }
+    if (amount_number_card == 16) {
+      for (int i = 0; i < amount_number_card; i++) {
+        if (client.number_card[i] >= 48 && client.number_card[i] <= 57) {
+        }
+        else {
+          break;
+        }
+        if (i == amount_number_card - 1) {
+          correct_number_card = 1;
+        }
+      }
+    }
+  }
+  fprintf (file, "%s\n", client.number_card);
+  //количество избранных фильмов изначально = 0
+  client.favorites_list = 0;
+  //корректный ввод администратора или пользователя
+  while (correct_admin != 1) {
+    while (getchar () != '\n');
+    printf ("вы 1 - админ, 0 - пользователь: ");
+    //считывание с консоли 0 или 1
+    fgets (client.admin, 2, stdin);
+    int box = (int)client.admin[0];
+    if (box == 48 || box == 49) {
+      correct_admin = 1;
+    }
+  }
+  fprintf (file, "%s", client.admin);
+  fprintf (file, "\n");
+  //возвращаем заполненный пользователем аккаунт 
+  return  client;
+}
+
+//функция входа в аккаунт
+void user_input () {
+  FILE* file = fopen ("users.txt", "a");
+  while (getchar () != '\n');
+  char login_input[20], password_input[20], login_file[20], password_file[20];
+  int correct_login = 0, correct_password = 0;
+  while (correct_login != 1) {
+    printf ("введите логин: ");
+    //считывание логина с консоли
+    fgets (login_input, 21, stdin);
+    //подсчёт количества символов в логине
+    int amount_login = strlen(login_input);
+    //подсчёт количества символов в логине без учёта пробела и переноса строки
+    for (int i = 0; i < 20; i++) {
+      int box = (int)login_input[i];
+      if (box == 10 || box == 32) {
+        amount_login--;
+      }
+    }
+    fgets (login_file, 21, file);
+    printf ("%c", login_file);
+    for (int i = 0; i < amount_login; i++) {
+      printf ("%s", login_file);
+      if (login_input[i] != login_file[i]) {
+        break;
+      }
+      if (i == strlen(login_input) - 1) {
+        correct_login = 1;
+      }
+    }
+  }
+  while (correct_password != 1) {
+    printf ("введите пароль: ");
+    //считывание пароля с консоли
+    fgets (password_input, 21, stdin);
+    //подсчёт количества символов в пароле
+    int amount_password = strlen(password_input);
+    //подсчёт количества символов в пароле без учёта пробела и переноса строки
+    for (int i = 0; i < 20; i++) {
+      int box = (int)password_input[i];
+      if (box == 10 || box == 32) {
+        amount_password--;
+      }
+    }
+    fgets (password_file, 21, file);
+    for (int i = 0; i < strlen(password_input); i++) {
+      if (password_input[i] != password_file[i]) {
+        break;
+      }
+      if (i == strlen(password_input) - 1) {
+        correct_password = 1;
+      }
+    }
+  }
+}
+
 int main(void) {
-  printf("boba");
-    return 0;
+  int answer;
+  printf ("здравствуйте, выберите что вам нужно: 1 - регистрация, 2 - вход\n");
+  scanf ("%d", &answer);
+  if (answer == 1) {
+    user client = user_registration();
+    //printf ("%s", client.login);
+  }
+  else {
+    user_input();
+  }
+  
+  return 0;
 }
